@@ -15,11 +15,6 @@ def quantum_circuit(inputs, weights):
     # Mapping đầu vào
     for i in range(N_QUBITS):
         qml.RY(pnp.pi * inputs[i], wires=i)
-
-    # Entanglement
-    for i in range(N_QUBITS):
-        qml.CNOT(wires=[i, (i + 1) % N_QUBITS])
-
     # Ansatze (Parametrized Quantum Circuit)
     qml.StronglyEntanglingLayers(weights, wires=range(N_QUBITS))
 

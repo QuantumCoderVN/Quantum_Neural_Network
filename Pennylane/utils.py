@@ -201,3 +201,31 @@ def evaluate_and_report(all_labels, all_preds):
     with open(CLASSIFICATION_REPORT_FILE, 'w') as f:
         f.write(class_report)
     print(f"Classification report saved to {CLASSIFICATION_REPORT_FILE}")
+
+
+# HybridQNN Parameter Counting
+def count_parameters(model):
+    """
+    Tính số parameter cổ điển, lượng tử, và tổng số parameter của mô hình HybridQNN.
+    
+    Args:
+        model (nn.Module): Mô hình HybridQNN.
+    
+    Returns:
+        tuple: (classical_params, quantum_params, total_params)
+    """
+    classical_params = 0
+    quantum_params = 0
+    
+    # Duyệt qua tất cả các tham số của mô hình
+    for name, param in model.named_parameters():
+        if 'quantum_layer' in name:
+            # Tham số thuộc lớp lượng tử
+            quantum_params += param.numel()
+        else:
+            # Tham số thuộc lớp cổ điển (classical_nn hoặc post_quantum_nn)
+            classical_params += param.numel()
+    
+    total_params = classical_params + quantum_params
+    
+    return classical_params, quantum_params, total_params

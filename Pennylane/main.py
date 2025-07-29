@@ -19,7 +19,7 @@ from models import HybridQNN, quantum_circuit
 from utils import (
     setup_results_directory, write_log, plot_quantum_circuit,
     plot_predictions, plot_training_metrics, plot_quantum_weights_evolution,
-    evaluate_and_report
+    evaluate_and_report, count_parameters
 )
 
 def main():
@@ -41,6 +41,15 @@ def main():
     print("\n--- Model Architecture ---")
     print(model)
     write_log(f"\n--- Model Architecture ---\n{model}")
+
+    # --- In số parameter ---
+    classical_params, quantum_params, total_params = count_parameters(model)
+    params_message = (f"Number of parameters:\n"
+                     f"  - Classical parameters: {classical_params}\n"
+                     f"  - Quantum parameters: {quantum_params}\n"
+                     f"  - Total parameters: {total_params}")
+    print(params_message)
+    write_log(params_message)
 
     # --- Vẽ và lưu kiến trúc mạch lượng tử ---
     plot_quantum_circuit(quantum_circuit)
