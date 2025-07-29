@@ -2,6 +2,7 @@
 
 import torch
 import torch.nn as nn
+"""
 import pennylane as qml
 from pennylane import numpy as pnp
 from config import N_QUBITS, N_LAYERS_ANSATZ
@@ -41,10 +42,10 @@ class QuantumLayer(nn.Module):
             q_out_tensor = torch.stack(q_out_list)
             batch_out.append(q_out_tensor)
         return torch.stack(batch_out)
-
+"""
 # --- Định nghĩa Mô hình QNN Lai (HybridQNN) ---
 class HybridQNN(nn.Module):
-    def __init__(self, img_size, n_qubits=N_QUBITS, num_classes=10):
+    def __init__(self, img_size, n_qubits=4, num_classes=10):
         super(HybridQNN, self).__init__()
         self.img_size = img_size
         self.n_qubits = n_qubits
@@ -52,20 +53,20 @@ class HybridQNN(nn.Module):
         self.classical_nn = nn.Sequential(
             nn.Linear(img_size * img_size, 128),
             nn.ReLU(),
-            nn.Linear(128, n_qubits) # Đầu ra của NN cổ điển là đầu vào cho mạch lượng tử
+            nn.Linear(128, num_classes) # Đầu ra của NN cổ điển là đầu vào cho mạch lượng tử
         )
 
-        self.quantum_layer = QuantumLayer(n_qubits)
+        # self.quantum_layer = QuantumLayer(n_qubits)
 
-        self.post_quantum_nn = nn.Linear(n_qubits, num_classes)
+        # self.post_quantum_nn = nn.Linear(n_qubits, num_classes)
 
     def forward(self, x):
         # Flatten ảnh
         x = x.view(x.size(0), -1)
         # Truyền qua lớp cổ điển
         x = self.classical_nn(x)
-        # Truyền qua lớp lượng tử
-        x = self.quantum_layer(x)
-        # Truyền qua lớp cổ điển cuối cùng để phân loại
-        x = self.post_quantum_nn(x)
+        # # Truyền qua lớp lượng tử
+        # x = self.quantum_layer(x)
+        # # Truyền qua lớp cổ điển cuối cùng để phân loại
+        # x = self.post_quantum_nn(x)
         return x

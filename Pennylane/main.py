@@ -14,11 +14,11 @@ from config import (
 # Nhập các hàm tải dữ liệu
 from data_loader import get_mnist_data_loaders
 # Nhập các lớp mô hình
-from models import HybridQNN, quantum_circuit
+from models import HybridQNN # quantum_circuit
 # Nhập các hàm tiện ích
 from utils import (
-    setup_results_directory, write_log, plot_quantum_circuit,
-    plot_predictions, plot_training_metrics, plot_quantum_weights_evolution,
+    setup_results_directory, write_log, # plot_quantum_circuit,
+    plot_predictions, plot_training_metrics, # plot_quantum_weights_evolution,
     evaluate_and_report, count_parameters
 )
 
@@ -51,8 +51,8 @@ def main():
     print(params_message)
     write_log(params_message)
 
-    # --- Vẽ và lưu kiến trúc mạch lượng tử ---
-    plot_quantum_circuit(quantum_circuit)
+    # # --- Vẽ và lưu kiến trúc mạch lượng tử ---
+    # plot_quantum_circuit(quantum_circuit)
 
     # --- Cấu hình Huấn luyện ---
     criterion = nn.CrossEntropyLoss()
@@ -63,14 +63,14 @@ def main():
     train_acc_list = []
     test_loss_list = []
     test_acc_list = []
-    quantum_weights_history = [] # Lưu trữ trọng số lượng tử để vẽ biểu đồ
+    # quantum_weights_history = [] # Lưu trữ trọng số lượng tử để vẽ biểu đồ
 
     print("\n--- Training Started ---")
     write_log("\n--- Training Started ---")
 
     for epoch in range(NUM_EPOCHS):
-        # Lưu giá trị trọng số lượng tử của epoch hiện tại
-        quantum_weights_history.append(model.quantum_layer.weights.detach().cpu().numpy().copy())
+        # # Lưu giá trị trọng số lượng tử của epoch hiện tại
+        # quantum_weights_history.append(model.quantum_layer.weights.detach().cpu().numpy().copy())
 
         # --- Training ---
         model.train()
@@ -138,7 +138,7 @@ def main():
     # --- Vẽ và Lưu biểu đồ kết quả ---
     plot_predictions(model, test_loader, DEVICE)
     plot_training_metrics(train_loss_list, train_acc_list, test_loss_list, test_acc_list, NUM_EPOCHS)
-    plot_quantum_weights_evolution(quantum_weights_history, NUM_EPOCHS)
+    # plot_quantum_weights_evolution(quantum_weights_history, NUM_EPOCHS)
     evaluate_and_report(all_labels, all_preds)
 
 if __name__ == "__main__":
